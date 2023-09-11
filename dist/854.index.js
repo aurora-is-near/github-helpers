@@ -243,7 +243,7 @@ function pick(obj, whitelist) {
     }, {});
 }
 const ALLOWED_KINDS = ['Component', 'System', 'API'];
-const ALLOWED_SPEC_FIELDS = ['type', 'address'];
+const ALLOWED_SPEC_FIELDS = ['type', 'deployedAt', 'address', 'startBlock'];
 const ALLOWED_METADATA_FIELDS = ['uid', 'namespace', 'name', 'title', 'annotations', 'tags'];
 class FilteredCollector {
     constructor(entities) {
