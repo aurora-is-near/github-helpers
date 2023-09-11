@@ -24,8 +24,8 @@ function pick<T extends {}, K extends keyof T>(obj: T, whitelist: K[]): Pick<T, 
   }, {} as Pick<T, K>);
 }
 
-const ALLOWED_KINDS = ['Component', 'System'];
-const ALLOWED_SPEC_FIELDS = ['type', 'deployedAt'];
+const ALLOWED_KINDS = ['Component', 'System', 'API'];
+const ALLOWED_SPEC_FIELDS = ['type', 'address'];
 const ALLOWED_METADATA_FIELDS = ['uid', 'namespace', 'name', 'title', 'annotations', 'tags'];
 
 export class FilteredCollector {
