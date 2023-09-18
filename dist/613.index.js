@@ -1,6 +1,6 @@
 "use strict";
-exports.id = 854;
-exports.ids = [854];
+exports.id = 613;
+exports.ids = [613];
 exports.modules = {
 
 /***/ 80885:
@@ -191,7 +191,7 @@ class MultisigsCollector {
 
 /***/ }),
 
-/***/ 23854:
+/***/ 23613:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -220,6 +220,36 @@ var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
 var multisigs_collector = __webpack_require__(80885);
 // EXTERNAL MODULE: ./src/utils/get-backstage-entities.ts
 var get_backstage_entities = __webpack_require__(81027);
+;// CONCATENATED MODULE: ./src/core/pick.ts
+function getNestedValue(obj, key) {
+    return key
+        .split('.')
+        .reduce((o, k) => (o && typeof o === 'object' && k in o ? o[k] : undefined), obj);
+}
+function setNestedValue(obj, path, value) {
+    const keys = path.split('.');
+    let current = obj;
+    for (let i = 0; i < keys.length - 1; i++) {
+        const key = keys[i];
+        if (typeof current === 'object' && current !== null && !(key in current)) {
+            current[key] = {};
+        }
+        current = current[key];
+    }
+    if (typeof current === 'object' && current !== null) {
+        current[keys[keys.length - 1]] = value;
+    }
+}
+function pick(obj, whitelist) {
+    return whitelist.reduce((newObj, key) => {
+        const value = getNestedValue(obj, key);
+        if (value !== undefined) {
+            setNestedValue(newObj, key, value);
+        }
+        return newObj;
+    }, {});
+}
+
 ;// CONCATENATED MODULE: ./src/core/filtered-collector.ts
 /*
 Copyright 2022 Aurora Labs
@@ -233,17 +263,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-function pick(obj, whitelist) {
-    return whitelist.reduce((newObj, key) => {
-        if (key in obj) {
-            // eslint-disable-next-line functional/immutable-data
-            newObj[key] = obj[key];
-        }
-        return newObj;
-    }, {});
-}
+
 const ALLOWED_KINDS = ['Component', 'System', 'API'];
-const ALLOWED_SPEC_FIELDS = ['type', 'deployedAt', 'address', 'startBlock'];
+const ALLOWED_SPEC_FIELDS = ['type', 'deployedAt', 'address', 'deployment.source.startBlock'];
 const ALLOWED_METADATA_FIELDS = ['uid', 'namespace', 'name', 'title', 'annotations', 'tags'];
 class FilteredCollector {
     constructor(entities) {
@@ -505,4 +527,4 @@ const getBackstageEntities = ({ backstage_url, backstage_entities_repo }) => __a
 
 };
 ;
-//# sourceMappingURL=854.index.js.map
+//# sourceMappingURL=613.index.js.map
