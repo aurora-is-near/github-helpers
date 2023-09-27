@@ -16,7 +16,7 @@ import { Entity } from '@backstage/catalog-model';
 import { pick } from './pick';
 
 const ALLOWED_KINDS = ['Component', 'System', 'API'];
-const ALLOWED_SPEC_FIELDS = ['type', 'deployedAt', 'address', 'deployment.source.startBlock'];
+const ALLOWED_SPEC_FIELDS = ['type', 'deployedAt', 'address', 'network', 'networkType', 'deployment.source.startBlock'];
 const ALLOWED_METADATA_FIELDS = ['uid', 'namespace', 'name', 'title', 'annotations', 'tags'];
 
 export class FilteredCollector {
