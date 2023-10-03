@@ -30,11 +30,15 @@ periodically refreshed from the on-chain data. If you have any questions about t
             {{/if}}
 
             {{#with entity.spec.multisig~}}
-                ##### Policy Threshold: {{policy.threshold}}/{{policy.owners}}
+                {{#if policy~}}
+                    ##### Policy Threshold: {{policy.threshold}}/{{policy.owners}}
+                {{/if}}
             {{/with}}
 
             {{#with entity.spec.multisig~}}
-                ##### Version: {{version}}
+                {{#if policy~}}
+                    ##### Version: {{version}}
+                {{/if}}
             {{/with}}
 
             {{#if signers~}}
