@@ -235,9 +235,14 @@ function inspectComponents(message, items) {
     core.info(`${message} (${items.length}):`);
     items.forEach(item => core.info(` - ${item.metadata.name} at "${sourceLocationRelative(item)}"`));
 }
+function isSolidityItem(item, path) {
+    const hasTags = ['ethereum', 'aurora'].some(tag => item.metadata.tags.includes(tag));
+    const hasFiles = hasInRoot(path, 'package.json') && ['.solhint.json', 'slither.config.json'].some(file => hasInRoot(path, file));
+    return hasTags || hasFiles;
+}
 function componentConfig(item, runTests, ignoreFailures) {
     const path = sourceLocationDir(item);
-    const isSolidity = ['ethereum', 'aurora'].some(tag => item.metadata.tags.includes(tag));
+    const isSolidity = isSolidityItem(item, path);
     const isRust = item.metadata.tags.includes('near') || hasInRoot(path, 'Cargo.toml');
     const isGo = hasInRoot(path, 'go.mod');
     const runSlither = isSolidity && runTests;
