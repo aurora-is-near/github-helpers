@@ -18,6 +18,7 @@ import { getChangedFiles } from '../utils/get-changed-files';
 import { Entity } from '@backstage/catalog-model';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as glob from 'glob';
 import { getBackstageEntities } from '../utils/get-backstage-entities';
 
 export class GenerateComponentMatrix extends HelperInputs {
@@ -94,14 +95,14 @@ function findRoot(dirName: string, rootFile: string) {
   return dirs.length > 0 ? dirs.join('/') : '.';
 }
 
-function hasInRoot(dirName: string, rootFile: string) {
+function hasInRoot(dirName: string, rootFilePattern: string) {
   const dirs = dirName.split('/');
-  const testFile = path.join('./', ...dirs, rootFile);
-  if (fs.existsSync(testFile)) {
-    core.info(`Found ${testFile}`);
+  const testFilePattern = path.join('./', ...dirs, rootFilePattern);
+  if (glob.sync(testFilePattern).length > 0) {
+    core.info(`Found ${testFilePattern}`);
     return true;
   }
-  core.info(`Unable to find ${rootFile} in ${dirName}`);
+  core.info(`Unable to find ${rootFilePattern} in ${dirName}`);
   return false;
 }
 
@@ -111,8 +112,9 @@ function inspectComponents(message: string, items: Entity[]) {
 }
 
 function isSolidityItem(item: Entity, path: string) {
+  // Not sure if hasTags is necessary anymore
   const hasTags = ['ethereum', 'aurora'].some(tag => item.metadata.tags!.includes(tag));
-  const hasFiles = hasInRoot(path, 'package.json') && ['.solhint.json', 'slither.config.json'].some(file => hasInRoot(path, file));
+  const hasFiles = hasInRoot(path, '**/*.sol');
   return hasTags || hasFiles;
 }
 function componentConfig(item: Entity, runTests: boolean, ignoreFailures: boolean) {

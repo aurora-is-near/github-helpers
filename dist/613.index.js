@@ -205,14 +205,14 @@ __webpack_require__.d(__webpack_exports__, {
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __webpack_require__(42186);
-// EXTERNAL MODULE: ./node_modules/glob/glob.js
-var glob = __webpack_require__(91957);
+// EXTERNAL MODULE: ./node_modules/glob/dist/esm/index.js + 15 modules
+var esm = __webpack_require__(50877);
 // EXTERNAL MODULE: ./src/types/generated.ts
 var generated = __webpack_require__(33476);
 // EXTERNAL MODULE: external "fs"
 var external_fs_ = __webpack_require__(57147);
 // EXTERNAL MODULE: ./node_modules/simple-git/dist/esm/index.js
-var esm = __webpack_require__(92628);
+var dist_esm = __webpack_require__(92628);
 // EXTERNAL MODULE: ./node_modules/handlebars/lib/index.js
 var lib = __webpack_require__(97492);
 var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
@@ -360,7 +360,7 @@ function reexportTemplate(inputs) {
 }
 function commitAndPushChanges(output_path) {
     return __awaiter(this, void 0, void 0, function* () {
-        const git = (0,esm/* simpleGit */.o5)('.');
+        const git = (0,dist_esm/* simpleGit */.o5)('.');
         yield git.addConfig('user.email', 'security@aurora.dev');
         yield git.addConfig('user.name', 'Backstage Exporter');
         yield git.add(output_path);
@@ -379,7 +379,7 @@ const backstageExport = ({ backstage_url, template_path, output_path, testing })
     const multisigsCollector = new multisigs_collector/* MultisigsCollector */.d(entities);
     const filteredCollector = new FilteredCollector(entities);
     // console.log(JSON.stringify(multisigsCollector.systemComponents[0], null, 2));
-    const changedFiles = glob.sync(`${template_path}**/*.hbs`).reduce((acc, templatePath) => {
+    const changedFiles = esm/* sync */.Z_(`${template_path}**/*.hbs`).reduce((acc, templatePath) => {
         const templateData = {
             multisigSystemComponents: multisigsCollector.systemComponents,
             filteredEntities: JSON.stringify(filteredCollector.entities, null, 2),

@@ -125,6 +125,8 @@ function parseStatus(status) {
 var external_path_ = __webpack_require__(71017);
 // EXTERNAL MODULE: external "fs"
 var external_fs_ = __webpack_require__(57147);
+// EXTERNAL MODULE: ./node_modules/glob/dist/esm/index.js + 15 modules
+var esm = __webpack_require__(50877);
 // EXTERNAL MODULE: ./src/utils/get-backstage-entities.ts
 var get_backstage_entities = __webpack_require__(81027);
 ;// CONCATENATED MODULE: ./src/helpers/generate-component-matrix.ts
@@ -149,6 +151,7 @@ var generate_component_matrix_awaiter = (undefined && undefined.__awaiter) || fu
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 
@@ -221,14 +224,14 @@ function findRoot(dirName, rootFile) {
     }
     return dirs.length > 0 ? dirs.join('/') : '.';
 }
-function hasInRoot(dirName, rootFile) {
+function hasInRoot(dirName, rootFilePattern) {
     const dirs = dirName.split('/');
-    const testFile = external_path_.join('./', ...dirs, rootFile);
-    if (external_fs_.existsSync(testFile)) {
-        core.info(`Found ${testFile}`);
+    const testFilePattern = external_path_.join('./', ...dirs, rootFilePattern);
+    if (esm/* sync */.Z_(testFilePattern).length > 0) {
+        core.info(`Found ${testFilePattern}`);
         return true;
     }
-    core.info(`Unable to find ${rootFile} in ${dirName}`);
+    core.info(`Unable to find ${rootFilePattern} in ${dirName}`);
     return false;
 }
 function inspectComponents(message, items) {
@@ -236,8 +239,9 @@ function inspectComponents(message, items) {
     items.forEach(item => core.info(` - ${item.metadata.name} at "${sourceLocationRelative(item)}"`));
 }
 function isSolidityItem(item, path) {
+    // Not sure if hasTags is necessary anymore
     const hasTags = ['ethereum', 'aurora'].some(tag => item.metadata.tags.includes(tag));
-    const hasFiles = hasInRoot(path, 'package.json') && ['.solhint.json', 'slither.config.json'].some(file => hasInRoot(path, file));
+    const hasFiles = hasInRoot(path, '**/*.sol');
     return hasTags || hasFiles;
 }
 function componentConfig(item, runTests, ignoreFailures) {
